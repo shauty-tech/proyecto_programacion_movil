@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/ver-asistencia" text="Volver" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-icon name="person" color="tertiary" slot="end" class="ion-padding" size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text color="primary" class="ion-text-center">
+   <h1>Asistencias</h1>
+  </ion-text>
+  <ion-list  lines="full" inset="true">
+   <ion-list-header mode="ios" color="primary">
+     <ion-label color="light">Menú de clases registradas de Asignatura_1</ion-label>
+   </ion-list-header>
+
+   <ion-item detail="true" routerLink="{{item.ruta}}" *ngFor="let item of vinculos" >
+    <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+  </ion-item>

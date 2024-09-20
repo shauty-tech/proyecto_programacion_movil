@@ -35,3 +35,20 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+.btnCancelarStyle{
+    color: rgb(221, 17, 17) !important;
+}
+
+.btnAceptarStyle{
+    //color: green !important;
+    color: var(--ion-color-success) !important;
+}
+
+.alert-head{
+    //color: var(--ion-color-danger) !important;
+    background-color: var(--ion-color-danger) !important;
+}
+
+.alert-message{
+    padding-top: 3% !important;
+}

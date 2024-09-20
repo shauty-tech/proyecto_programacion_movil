@@ -1,0 +1,13 @@
+<app-encabezado titulo=""></app-encabezado>
+<ion-content>
+  <ion-text color="primary" class="ion-text-center">
+   <h1>Generar QR</h1>
+  </ion-text>
+  <ion-list  lines="full" inset="true">
+   <ion-list-header mode="ios" color="primary">
+     <ion-label color="light">Menú por Asignaturas</ion-label>
+   </ion-list-header>
+
+   <ion-item detail="true" routerLink="{{item.ruta}}" *ngFor="let item of vinculos" >
+    <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+  </ion-item>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-qr" text="Volver" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-icon name="person" color="tertiary" slot="end" class="ion-padding" size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+      <ion-text class="ion-text-center">
+        <h1>QR en linea</h1>
+      </ion-text>
+      <ion-grid>
+        <ion-row>
+          <ion-col></ion-col>
+          <ion-col size="8"><ion-img
+            src="https://acf.geeknetic.es/imgw/imagenes/auto/2020/11/14/m6v-como-escanear-codigos-qr-de-una-forma-rapida.png?f=webp"
+            alt="The Wisconsin State Capitol building in Madison, WI at night"
+          ></ion-img></ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-content>
+
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-button id="btnAlerta_2" expand="block" fill="solid">
+            Cancelar asistencia
+          </ion-button>
+          <ion-alert
+          trigger="btnAlerta_2"
+          header="Advertencia"
+          subHeader="Nuevo en Ionic"
+          message="Esta seguro de querer CANCELAR la asistencia?"
+          [buttons]="alertButtons_2"
+          backdropDismiss="false"
+          >
+        </ion-alert>
+        </ion-col>
+        <ion-col>     
+          <ion-button id="btnAlerta" expand="block" fill="solid">
+            Terminar asistencia
+          </ion-button>
+          <ion-alert
+          trigger="btnAlerta"
+          header="Advertencia"
+          subHeader="Nuevo en Ionic"
+          message="Esta seguro de TERMINAR de pasar asistencia?"
+          [buttons]="alertButtons"
+          backdropDismiss="false"
+          >
+        </ion-alert></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
