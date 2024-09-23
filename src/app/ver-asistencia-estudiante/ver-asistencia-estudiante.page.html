@@ -1,13 +1,36 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ver_asistencia_estudiante</ion-title>
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-estudiante" text="Volver" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-icon name="person" color="tertiary" slot="end" class="ion-padding" size="large"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ver_asistencia_estudiante</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
+<ion-content>
+  <ion-text color="primary" class="ion-text-center">
+   <h1>Asistencias</h1>
+  </ion-text>
+  <ion-list  lines="full" inset="true">
+   <ion-list-header mode="ios" color="primary">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6" color="primary">Asignatura</ion-col>
+        <ion-col size="6" color="primary">PORCENTAJE DE ASISTENCIA</ion-col>
+      </ion-row>
+    </ion-grid>
+   </ion-list-header>
+   <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngFor="let item of vinculos">
+          <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item *ngFor="let item of recurso">
+          <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>

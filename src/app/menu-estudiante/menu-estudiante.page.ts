@@ -22,6 +22,11 @@ export class MenuEstudiantePage implements OnInit {
     titulo:'Registrar asistencia',
     icono:'walk-outline'
   },
+  {
+    ruta:'/ver-asistencia-estudiante',
+    titulo:'ver asistencia',
+    icono:'school-outline'
+  },
 
   ];
   
