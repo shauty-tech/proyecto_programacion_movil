@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'menu-profesor',
     loadChildren: () => import('./menu-profesor/menu-profesor.module').then( m => m.MenuProfesorPageModule)
   },
+  {
+    path: 'registrar-camara',
+    loadChildren: () => import('./registrar-camara/registrar-camara.module').then( m => m.RegistrarCamaraPageModule)
+  },
 
 ];
 

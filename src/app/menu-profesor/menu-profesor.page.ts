@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemList } from 'src/app/interfaces/itemlist';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 @Component({
   selector: 'app-menu-profesor',
   templateUrl: './menu-profesor.page.html',
@@ -39,6 +39,7 @@ export class MenuProfesorPage implements OnInit {
     cssClass:'btnAceptarStyle',
     handler:()=>{
       this.accion='Presionó aceptar';
+      this.router.navigate(['/home']);
     }
   },{
     text:'Cancelar',
@@ -47,7 +48,7 @@ export class MenuProfesorPage implements OnInit {
       this.accion="Presionó cancelar";
     }
   }]
-  constructor(private alertctrl:AlertController) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }

@@ -1,10 +1,17 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title color="tertiary" mode="md" class="ion-text-center">Estudiante</ion-title>
+    <ion-icon name="person-outline" color="tertiary" slot="end" class="ion-padding" size="large"></ion-icon>
+    <ion-icon name="" color="tertiary" slot="start" size="large" class="ion-padding"></ion-icon>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <ion-text color="primary" class="ion-text-center">
    <h1>bienvenido</h1>
   </ion-text>
   <ion-list  lines="full" inset="true">
    <ion-list-header mode="ios" color="primary">
-     <ion-label color="light">menu_estudiante</ion-label>
+     <ion-label color="light">Menú</ion-label>
    </ion-list-header>
 
    <ion-item detail="true" routerLink="{{item.ruta}}" *ngFor="let item of vinculos" >

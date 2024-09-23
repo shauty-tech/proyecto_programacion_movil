@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemList } from 'src/app/interfaces/itemlist';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router'; 
 @Component({
   selector: 'app-menu-estudiante',
   templateUrl: './menu-estudiante.page.html',
@@ -8,7 +8,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class MenuEstudiantePage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -18,9 +18,9 @@ export class MenuEstudiantePage implements OnInit {
 
   clase:string=''
   vinculos:ItemList[]=[{
-    ruta:'',
-    titulo:'camara',
-    icono:'alarm'
+    ruta:'/registrar-camara',
+    titulo:'Registrar asistencia',
+    icono:'walk-outline'
   },
 
   ];
@@ -31,6 +31,7 @@ export class MenuEstudiantePage implements OnInit {
     cssClass:'btnAceptarStyle',
     handler:()=>{
       this.accion='Presionó aceptar';
+      this.router.navigate(['/home']);
     }
   },{
     text:'Cancelar',
