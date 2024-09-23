@@ -34,7 +34,15 @@ const routes: Routes = [
   {
     path: 'menu-qr',
     loadChildren: () => import('./menu-qr/menu-qr.module').then( m => m.MenuQRPageModule)
+  },  {
+    path: 'menu-estudiante',
+    loadChildren: () => import('./menu-estudiante/menu-estudiante.module').then( m => m.MenuEstudiantePageModule)
   },
+  {
+    path: 'menu-profesor',
+    loadChildren: () => import('./menu-profesor/menu-profesor.module').then( m => m.MenuProfesorPageModule)
+  },
+
 ];
 
 @NgModule({

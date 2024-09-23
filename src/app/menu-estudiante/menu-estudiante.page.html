@@ -1,0 +1,34 @@
+<ion-content>
+  <ion-text color="primary" class="ion-text-center">
+   <h1>bienvenido</h1>
+  </ion-text>
+  <ion-list  lines="full" inset="true">
+   <ion-list-header mode="ios" color="primary">
+     <ion-label color="light">menu_estudiante</ion-label>
+   </ion-list-header>
+
+   <ion-item detail="true" routerLink="{{item.ruta}}" *ngFor="let item of vinculos" >
+    <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+    <ion-icon name="{{item.icono}}" slot="start"></ion-icon>
+  </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+        <ion-col>
+          <ion-button id="btnAlerta" size="default" fill="solid">
+            Cerrar sesion
+          </ion-button>
+          <ion-alert
+            trigger="btnAlerta"
+            header="Cerrar sesion"
+            subHeader="Cuidado"
+            message="Esta seguro de cerrar su seccion actual?"
+            [buttons]="alertButtons"
+            backdropDismiss="false"
+            
+            >
+            </ion-alert>
+        </ion-col>
+      </ion-row>
+    </ion-grid>

@@ -16,7 +16,7 @@ export class AsistenciaPage implements OnInit {
     cssClass:'btnAceptarStyle',
     handler:()=>{
       this.accion_1='Presionó aceptar';
-      this.router.navigate(['/home']);
+      this.router.navigate(['/menu-profesor']);
     }
   },{
     text:'Cancelar',
@@ -30,7 +30,7 @@ export class AsistenciaPage implements OnInit {
     cssClass:'btnAceptarStyle',
     handler:()=>{
       this.accion='Presionó aceptar';
-      this.router.navigate(['/home']);
+      this.router.navigate(['/menu-profesor']);
     }
   },{
     text:'Cancelar',

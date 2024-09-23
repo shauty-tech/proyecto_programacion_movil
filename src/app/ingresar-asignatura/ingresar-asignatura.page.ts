@@ -43,7 +43,7 @@ export class IngresarAsignaturaPage implements OnInit {
     cssClass:'btnAceptarStyle',
     handler:()=>{
       this.accion='Presionó aceptar';
-      this.router.navigate(['/home']);
+      this.router.navigate(['/menu-profesor']);
     }
   },{
     text:'Cancelar',
@@ -61,7 +61,7 @@ export class IngresarAsignaturaPage implements OnInit {
         this.accion = 'Presionó aceptar';
         this.codigo = '';
         this.asignatura = '';
-        this.router.navigate(['/home']);
+        this.router.navigate(['/menu-profesor']);
       } else {
         // Aquí puedes agregar un mensaje de error o feedback
         this.accion = 'Código o asignatura no válidos';

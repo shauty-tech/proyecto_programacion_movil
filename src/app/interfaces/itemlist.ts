@@ -12,3 +12,11 @@ export interface Recurso_nombre{
 export interface Recurso_asistencia{
     titulo:string,
 }
+
+
+export interface ItemList_alumno {    
+    ruta:string,
+    titulo:string,
+    icono:string
+    
+}
