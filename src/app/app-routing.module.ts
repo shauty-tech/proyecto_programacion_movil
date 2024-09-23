@@ -46,6 +46,10 @@ const routes: Routes = [
     path: 'registrar-camara',
     loadChildren: () => import('./registrar-camara/registrar-camara.module').then( m => m.RegistrarCamaraPageModule)
   },
+  {
+    path: 'ver-asistencia-estudiante',
+    loadChildren: () => import('./ver-asistencia-estudiante/ver-asistencia-estudiante.module').then( m => m.VerAsistenciaEstudiantePageModule)
+  },
 
 ];
 
