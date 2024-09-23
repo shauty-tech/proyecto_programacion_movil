@@ -14,16 +14,23 @@ export class IngresarAsignaturaPage implements OnInit {
   codigoValido: boolean = true;
   asignatura: string = '';
   asignaturaValida: boolean = true;
-
+  mensajeError: string = '';
   constructor(private router: Router) { }
 
   ngOnInit() {
   }
   validarCodigo() {
-    if (this.codigo && this.codigo.toString().length === 5){
-      this.codigoValido = true;
+    if (this.codigo && this.codigo.toString().length === 5) {
+      if (/^\d+$/.test(this.codigo)) {
+        this.codigoValido = true;
+        this.mensajeError = '';
+      } else {
+        this.codigoValido = false;
+        this.mensajeError = 'No se permiten caracteres.';
+      }
     } else {
       this.codigoValido = false;
+      this.mensajeError = 'El código debe tener exactamente 5 dígitos.';
     }
   }
   validarAsignatura() {
@@ -52,6 +59,8 @@ export class IngresarAsignaturaPage implements OnInit {
     handler: () => {
       if (this.codigoValido && this.asignaturaValida) {
         this.accion = 'Presionó aceptar';
+        this.codigo = '';
+        this.asignatura = '';
         this.router.navigate(['/home']);
       } else {
         // Aquí puedes agregar un mensaje de error o feedback

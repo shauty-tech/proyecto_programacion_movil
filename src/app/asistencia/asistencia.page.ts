@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router'; 
 @Component({
   selector: 'app-asistencia',
@@ -11,18 +10,19 @@ export class AsistenciaPage implements OnInit {
 
   clase:string=''
 
-  alertButtons=[{
+  accion_1: string=''//cuidado con la reutilizacion de codigo, con la parte del hadler
+  alertButtons_1=[{
     text:'Aceptar',
     cssClass:'btnAceptarStyle',
     handler:()=>{
-      this.accion='Presionó aceptar';
+      this.accion_1='Presionó aceptar';
       this.router.navigate(['/home']);
     }
   },{
     text:'Cancelar',
     cssClass:'btnCancelarStyle',
     handler:()=>{
-      this.accion="Presionó cancelar";
+      this.accion_1="Presionó cancelar";
     }
   }]
   alertButtons_2=[{

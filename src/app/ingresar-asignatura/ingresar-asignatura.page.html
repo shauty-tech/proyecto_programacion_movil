@@ -15,18 +15,18 @@
       </ion-note>
     </ion-list>
 
-      <ion-list>
-        <ion-item>
-            <ion-label>Ingrese código</ion-label>
-            <ion-input
-              [(ngModel)]="codigo"
-              (ngModelChange)="validarCodigo()"
-              placeholder="00000"
-              [clearInput]="true"
-            ></ion-input>
-          </ion-item>
-          <ion-note *ngIf="!codigoValido" color="danger">El código debe tener exactamente 5 dígitos.</ion-note>
-      </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>Ingrese código</ion-label>
+        <ion-input
+          [(ngModel)]="codigo"
+          (ngModelChange)="validarCodigo()"
+          placeholder="00000"
+          [clearInput]="true"
+        ></ion-input>
+      </ion-item>
+      <ion-note *ngIf="!codigoValido" color="danger">{{ mensajeError }}</ion-note>
+    </ion-list>
 
       <ion-grid>
         <ion-row>

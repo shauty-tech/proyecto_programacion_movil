@@ -28,7 +28,7 @@
       <ion-row>
         <ion-col></ion-col>
         <ion-col>
-          <ion-button id="btnAlerta_2" expand="block" fill="solid">
+          <ion-button id="btnAlerta_2" fill="solid">
             Cancelar asistencia
           </ion-button>
           <ion-alert
@@ -42,15 +42,15 @@
         </ion-alert>
         </ion-col>
         <ion-col>     
-          <ion-button id="btnAlerta" expand="block" fill="solid">
+          <ion-button id="btnAlerta_1"  fill="solid">
             Terminar asistencia
           </ion-button>
           <ion-alert
-          trigger="btnAlerta"
+          trigger="btnAlerta_1"
           header="Advertencia"
           subHeader="Nuevo en Ionic"
           message="Esta seguro de TERMINAR de pasar asistencia?"
-          [buttons]="alertButtons"
+          [buttons]="alertButtons_1"
           backdropDismiss="false"
           >
         </ion-alert></ion-col>
