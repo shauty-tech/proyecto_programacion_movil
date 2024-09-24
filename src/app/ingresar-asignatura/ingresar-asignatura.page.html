@@ -1,49 +1,43 @@
 <app-encabezado titulo="Ingresar asignarura"></app-encabezado>
 <ion-content>
 <p></p>
-    <ion-list>
-        <ion-label position="stacked">Ingrese la asignatura</ion-label>
-        <ion-input
-          [(ngModel)]="asignatura"
-          (ngModelChange)="validarAsignatura()"
-          [clearInput]="true"
-          placeholder="Nombre_ejemplo"
-          [maxlength]="20"
-        ></ion-input>
-      <ion-note *ngIf="!asignaturaValida" color="danger">
-        La asignatura debe tener entre 3 y 20 letras.
-      </ion-note>
-    </ion-list>
-
-    <ion-list>
-      <ion-item>
-        <ion-label>Ingrese código</ion-label>
-        <ion-input
-          [(ngModel)]="codigo"
-          (ngModelChange)="validarCodigo()"
-          placeholder="00000"
-          [clearInput]="true"
-        ></ion-input>
-      </ion-item>
-      <ion-note *ngIf="!codigoValido" color="danger">{{ mensajeError }}</ion-note>
-    </ion-list>
+<ion-list>
+  <ion-item>
+    <ion-label position="stacked">Ingrese la asignatura</ion-label>
+    <ion-input
+      [(ngModel)]="asignatura"
+      (ngModelChange)="validarAsignatura()"
+      [clearInput]="true"
+      placeholder="Nombre_ejemplo"
+      [maxlength]="20"
+    ></ion-input>
+  </ion-item>
+  <ion-note *ngIf="!asignaturaValida" color="danger">
+    La asignatura debe tener entre 3 y 20 letras.
+  </ion-note>
+</ion-list>
+<p></p>
+<p></p>
+<ion-list>
+  <ion-item>
+    <ion-label position="stacked">Código de la asignatura</ion-label>
+    <ion-input
+      [(ngModel)]="codigo"
+      (ngModelChange)="validarCodigo()"
+      placeholder="004D"
+      [clearInput]="true"
+    ></ion-input>
+  </ion-item>
+  <ion-note *ngIf="!codigoValido" color="danger">{{ mensajeError }}</ion-note>
+</ion-list>
 
       <ion-grid>
         <ion-row>
           <ion-col></ion-col>
           <ion-col>
-            <ion-button id="btnAlerta" expand="block" fill="solid">
+            <ion-button id="btnAlerta" expand="block" (click)="submitCodigo()">
                 Guardar Asignatura
               </ion-button>
-              <ion-alert
-              trigger="btnAlerta"
-              header="Advertencia"
-              subHeader="Nuevo en Ionic"
-              message="Esta seguro de TERMINAR de pasar asistencia?"
-              [buttons]="alertButtons"
-              backdropDismiss="false"
-              >
-            </ion-alert>
           </ion-col>
           <ion-col>
             <ion-button id="btnAlerta_2" expand="block" fill="solid">
