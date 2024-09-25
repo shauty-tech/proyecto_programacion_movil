@@ -42,12 +42,12 @@ export class IngresarAsignaturaPage implements OnInit {
     this.asignaturaValida = length >= 3 && length <= 20;
   }
   async submitCodigo() {
-    this.validarCodigo(); // Valida el código antes de proceder
+    this.validarCodigo();
     if (this.codigoValido) {
       const alert = await this.alertController.create({
         header: 'Advertencia',
-        subHeader: 'Nuevo en Ionic',
-        message: '¿Está seguro de TERMINAR de pasar asistencia?',
+        subHeader: 'Cuidado',
+        message: '¿Está seguro de GUARDAR la siguiente asignatura?',
         buttons: this.alertButtons,
         backdropDismiss: false
       });
