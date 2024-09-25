@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemList } from 'src/app/interfaces/itemlist';
 import { Router } from '@angular/router'; 
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-menu-estudiante',
   templateUrl: './menu-estudiante.page.html',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class MenuEstudiantePage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -45,4 +46,18 @@ export class MenuEstudiantePage implements OnInit {
       this.accion="Presionó cancelar";
     }
   }];
+
+
+  async submitCodigo() {
+
+      const alert = await this.alertController.create({
+        header: 'Cerrar sesion',
+        subHeader: 'Cuidado',
+        message: '¿Esta seguro de cerrar su seccion actual?',
+        buttons: this.alertButtons,
+        backdropDismiss: false
+      });
+      await alert.present();
+
+  }
 }

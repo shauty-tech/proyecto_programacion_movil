@@ -23,19 +23,9 @@
         <ion-col></ion-col>
         <ion-col></ion-col>
         <ion-col>
-          <ion-button id="btnAlerta" size="default" fill="solid">
+          <ion-button id="btnAlerta" size="default" fill="solid" (click)="submitCodigo()">
             Cerrar sesion
           </ion-button>
-          <ion-alert
-            trigger="btnAlerta"
-            header="Cerrar sesion"
-            subHeader="Cuidado"
-            message="Esta seguro de cerrar su seccion actual?"
-            [buttons]="alertButtons"
-            backdropDismiss="false"
-            
-            >
-            </ion-alert>
         </ion-col>
       </ion-row>
     </ion-grid>
