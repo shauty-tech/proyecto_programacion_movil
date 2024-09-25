@@ -50,6 +50,18 @@ const routes: Routes = [
     path: 'ver-asistencia-estudiante',
     loadChildren: () => import('./ver-asistencia-estudiante/ver-asistencia-estudiante.module').then( m => m.VerAsistenciaEstudiantePageModule)
   },
+  {
+    path: 'login-alumno',
+    loadChildren: () => import('./login/login-alumno/login-alumno.module').then( m => m.LoginAlumnoPageModule)
+  },
+  {
+    path: 'login-profesor',
+    loadChildren: () => import('./login/login-profesor/login-profesor.module').then( m => m.LoginProfesorPageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./login/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },
 
 ];
 
