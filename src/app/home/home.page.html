@@ -1,10 +1,11 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content>
-  <ion-text color="primary" class="ion-text-center">
-   <h1>bienvenido</h1>
-  </ion-text>
-  <ion-list  lines="full" inset="true">
-   <ion-list-header mode="ios" color="primary">
-     <ion-label color="light">Iniciar sesion</ion-label>
-   </ion-list-header>
-
+<ion-content class="ion-padding">
+  <h1>Bienvenido</h1>
+  <ion-button expand="full" routerLink="/login-alumno">Iniciar sesión como Alumno</ion-button>
+  <ion-button expand="full" routerLink="/login-profesor">Iniciar sesión como Profesor</ion-button>
+</ion-content>
