@@ -9,27 +9,21 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Inicia sesión como Alumno</ion-card-title>
+      <ion-card-title>Inicia sesión</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <form (submit)="loginAlumno()">
+      <form (submit)="login()">
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="emailAlumno" type="email" name="emailAlumno" required></ion-input>
+          <ion-input [(ngModel)]="email" type="email" name="email" required></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input [(ngModel)]="passwordAlumno" type="password" name="passwordAlumno" required></ion-input>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-label></ion-label>
+          <ion-input [(ngModel)]="password" type="password" name="password" required></ion-input>
         </ion-item>
         <ion-button expand="full" type="submit">Ingresar</ion-button>
-        <ion-item lines="none">
-          <ion-label></ion-label>
-        </ion-item>
-        <ion-button expand="full" routerLink="/reset-password">¿Olvidaste tu contraseña?</ion-button>
       </form>
+      <ion-button expand="full" routerLink="/reset-password">¿Olvidaste tu contraseña?</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
