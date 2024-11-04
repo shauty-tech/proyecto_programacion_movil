@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 export class AsistenciaPage implements OnInit {
   accion:string=''
 
+  qr_text: string='liga de las leyendas'
   clase:string=''
 
   accion_1: string=''//cuidado con la reutilizacion de codigo, con la parte del hadler
