@@ -14,10 +14,9 @@
       <ion-grid>
         <ion-row>
           <ion-col></ion-col>
-          <ion-col size="8"><ion-img
-            src="https://acf.geeknetic.es/imgw/imagenes/auto/2020/11/14/m6v-como-escanear-codigos-qr-de-una-forma-rapida.png?f=webp"
-            alt="The Wisconsin State Capitol building in Madison, WI at night"
-          ></ion-img></ion-col>
+          <ion-col size="8"><qr-code [value]="hola" 
+            size="300" 
+            errorCorrectionLevel="M" /></ion-col>
           <ion-col></ion-col>
         </ion-row>
       </ion-grid>

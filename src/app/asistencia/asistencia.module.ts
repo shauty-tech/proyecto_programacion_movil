@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { QrCodeModule } from 'ng-qrcode';
 import { AsistenciaPageRoutingModule } from './asistencia-routing.module';
 
 import { AsistenciaPage } from './asistencia.page';
@@ -15,7 +15,8 @@ import { ComponentsModule } from "../components/components.module";
     FormsModule,
     IonicModule,
     AsistenciaPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    QrCodeModule
   ],
   declarations: [AsistenciaPage]
 })
