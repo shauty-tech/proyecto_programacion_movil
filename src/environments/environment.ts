@@ -2,18 +2,34 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+  measurementId: string;
+}
+
+export interface Environment {
+  production: boolean;
+  firebaseConfig: FirebaseConfig;
+}
+
+export const environment: Environment = {
   production: false,
   firebaseConfig: {
     apiKey: "AIzaSyD8eWIi-tqS6pUQbtGY7UaLhvA94nxjSsQ",
-  authDomain: "programacion-movil-6fcf8.firebaseapp.com",
-  projectId: "programacion-movil-6fcf8",
-  storageBucket: "programacion-movil-6fcf8.firebasestorage.app",
-  messagingSenderId: "4116629945",
-  appId: "1:4116629945:web:11d275e533cbb6cab64e68",
-  measurementId: "G-33G4JLHP52"
+    authDomain: "programacion-movil-6fcf8.firebaseapp.com",
+    projectId: "programacion-movil-6fcf8",
+    storageBucket: "programacion-movil-6fcf8.appspot.com",
+    messagingSenderId: "4116629945",
+    appId: "1:4116629945:web:11d275e533cbb6cab64e68",
+    measurementId: "G-33G4JLHP52"
   }
 };
+
 
 /*s
  * For easier debugging in development mode, you can import the following file
