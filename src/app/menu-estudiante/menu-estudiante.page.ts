@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemList } from 'src/app/interfaces/itemlist';
 import { Router } from '@angular/router'; 
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { BarcodeScanningModalComponent } from './barcode-scanning-modal.component';
+import { LensFacing } from '@capacitor-mlkit/barcode-scanning';
 @Component({
   selector: 'app-menu-estudiante',
   templateUrl: './menu-estudiante.page.html',
@@ -9,7 +11,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class MenuEstudiantePage implements OnInit {
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private router: Router, private alertController: AlertController, private modalController: ModalController) { }
 
   ngOnInit() {
   }
@@ -31,7 +33,18 @@ export class MenuEstudiantePage implements OnInit {
 
   ];
   
+  async startScan() {
+    const modal = await this.modalController.create({
+    component: BarcodeScanningModalComponent,
+    componentProps: { 
+      formats: [],
+      lensFacing :LensFacing
+     }
+    });
   
+    await modal.present();
+  
+  }
     alertButtons=[{
     text:'Aceptar',
     cssClass:'btnAceptarStyle',
