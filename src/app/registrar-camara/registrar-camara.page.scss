@@ -1,0 +1,14 @@
+.fab-center {
+    position: absolute;
+    top: 50%; /* Centrado verticalmente */
+    left: 50%; /* Centrado horizontalmente */
+    transform: translate(-50%, -50%); /* Ajuste fino para centrar el botón */
+    z-index: 1000; /* Asegura que el botón se muestre encima de otros elementos */
+  }
+  
+  ion-fab-button {
+    --width: 120px;  /* Tamaño gigante */
+    --height: 120px; /* Tamaño gigante */
+    --border-radius: 50%; /* Mantener el botón redondeado */
+    font-size: 48px; /* Ícono gigante */
+  }

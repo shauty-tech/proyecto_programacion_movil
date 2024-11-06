@@ -7,29 +7,30 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-text class="ion-text-center">
-    <h1>Registre el QR</h1>
-  </ion-text>
-  <ion-grid>
-    <ion-row>
-      <ion-col></ion-col>
-      <ion-col size="11">
-        <ion-list>
-          <ion-item *ngFor="let barcode of barcodes">
-            <ion-label position="stacked">{{ barcode.format }}</ion-label>
-            <ion-input type="text" [value]="barcode.rawValue"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-  </ion-grid>
 
-  <!-- Botón flotante fuera del ion-grid -->
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
-      <ion-icon name="scan"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Registre el QR</ion-card-title>
+        <ion-card-subtitle>aqui va el id de la persona creo</ion-card-subtitle>
+      </ion-card-header>
+  
+      <ion-card-content>
+        <ion-item *ngFor="let barcode of barcodes">
+          <ion-label position="stacked">{{ barcode.format }}</ion-label>
+          <ion-input type="text" [value]="barcode.rawValue"></ion-input>
+        </ion-item>
+  
+        <ion-text color="primary">
+          <h1>Escanea el qr con el boton que esta abajo </h1>
+          <h1>👇👇👇👇👇</h1>
+        </ion-text>
+  
+        <!-- Botón debajo del texto -->
+        <ion-button  (click)="scan()" [disabled]="!isSupported">
+          <ion-icon slot="start" name="scan"></ion-icon>
+          Escanear QR
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
