@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { BarcodeScanningModalComponent } from './barcode-scanning-modal.component';
 import { LensFacing } from '@capacitor-mlkit/barcode-scanning';
+import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 @Component({
   selector: 'app-menu-estudiante',
   templateUrl: './menu-estudiante.page.html',
@@ -14,8 +15,13 @@ export class MenuEstudiantePage implements OnInit {
   constructor(private router: Router, private alertController: AlertController, private modalController: ModalController) { }
 
   ngOnInit() {
+    BarcodeScanner.isSupported().then((result) => {
+      this.isSupported = result.supported;
+    });
   }
 
+  isSupported = false;
+  barcodes: Barcode[] = [];
 
   accion:string=''
 
@@ -73,4 +79,5 @@ export class MenuEstudiantePage implements OnInit {
       await alert.present();
 
   }
+  
 }
