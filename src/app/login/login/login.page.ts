@@ -1,3 +1,4 @@
+import { User } from './../../interfaces/usuario';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -14,13 +15,22 @@ export class LoginPage {
 
   constructor(private router: Router, private authService: AuthService, private toastController: ToastController) {}
 
+  
+
+
   login() {
-    this.authService.login(this.email, this.password)
+    const user: User = {
+      uid: '',
+      email: this.email,
+      password: this.password,
+      name: ''
+    };
+    this.authService.login(user)
       .then(() => {
-        if (this.email.endsWith('@alumno.cl')) {
+        if (user.email.endsWith('@alumno.cl')) {
           this.router.navigate(['/menu-estudiante']);
           this.presentToast('Inicio de sesión exitoso como estudiante.');
-        } else if (this.email.endsWith('@profesor.cl')) {
+        } else if (user.email.endsWith('@profesor.cl')) {
           this.router.navigate(['/menu-profesor']);
           this.presentToast('Inicio de sesión exitoso como profesor.');
         } else {
