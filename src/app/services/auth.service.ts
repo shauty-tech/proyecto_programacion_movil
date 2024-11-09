@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User } from '../interfaces/usuario';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root', // Esto asegura que el servicio esté disponible en toda la app
 })
 export class AuthService {
   constructor(private afAuth: AngularFireAuth) {}
@@ -12,9 +12,20 @@ export class AuthService {
     return this.afAuth.signInWithEmailAndPassword(user.email, user.password);
   }
 
-  register(email: string, password: string) {
-    return this.afAuth.createUserWithEmailAndPassword(email, password);
+ async register(email: string, password: string, name: string) {
+  try {
+    const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+
+    if (name) {
+      await user.updateProfile({ displayName: name }); 
+    }
+
+    return userCredential;
+  } catch (error) {
+    throw error;
   }
+}
 
   logout() {
     return this.afAuth.signOut();

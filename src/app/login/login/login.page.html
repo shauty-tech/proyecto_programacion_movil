@@ -12,15 +12,19 @@
       <ion-card-title>Inicia sesión</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <form (submit)="login()">
+      <!-- El formulario ahora usa formGroup con formControlName en lugar de ngModel -->
+      <form [formGroup]="form" (ngSubmit)="login()">
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="email" type="email" name="email" required></ion-input>
+          <!-- Cambié ngModel por formControlName -->
+          <ion-input formControlName="email" type="email" required></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input [(ngModel)]="password" type="password" name="password" required></ion-input>
+          <!-- Cambié ngModel por formControlName -->
+          <ion-input formControlName="password" type="password" required></ion-input>
         </ion-item>
+        <!-- Cambié type="login()" por type="submit" -->
         <ion-button expand="full" type="submit">Ingresar</ion-button>
       </form>
       <ion-button expand="full" routerLink="/reset-password">¿Olvidaste tu contraseña?</ion-button>
