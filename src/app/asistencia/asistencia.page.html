@@ -8,51 +8,63 @@
 </ion-header>
 
 <ion-content>
-      <ion-text class="ion-text-center">
-        <h1>QR en linea</h1>
-      </ion-text>
-      <ion-grid>
-        <ion-row>
-          <ion-col></ion-col>
-          <ion-col size="8"><qr-code [value]="hola" 
-            size="300" 
-            errorCorrectionLevel="M" /></ion-col>
-          <ion-col></ion-col>
-        </ion-row>
-      </ion-grid>
-  </ion-content>
+  <ion-text class="ion-text-center">
+    <h1>QR en linea</h1>
+  </ion-text>
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col size="8">
+        <!-- Código QR -->
+        <qr-code [value]="hola" size="300" errorCorrectionLevel="M"></qr-code>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+    <ion-row class="ion-text-center">
+      <ion-col></ion-col>
+      <ion-col>
+        <!-- Botón Generar QR -->
+        <ion-button (click)="generateQR()" color="primary" expand="block">
+          Generar QR
+        </ion-button>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
 
-  <ion-content>
-    <ion-grid>
-      <ion-row>
-        <ion-col></ion-col>
-        <ion-col>
-          <ion-button id="btnAlerta_2" fill="solid">
-            Cancelar asistencia
-          </ion-button>
-          <ion-alert
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col>
+        <!-- Botón Cancelar asistencia -->
+        <ion-button id="btnAlerta_2" fill="solid">
+          Cancelar asistencia
+        </ion-button>
+        <ion-alert
           trigger="btnAlerta_2"
           header="Advertencia"
           subHeader="Nuevo en Ionic"
-          message="Esta seguro de querer CANCELAR la asistencia?"
+          message="¿Está seguro de querer CANCELAR la asistencia?"
           [buttons]="alertButtons_2"
           backdropDismiss="false"
-          >
-        </ion-alert>
-        </ion-col>
-        <ion-col>     
-          <ion-button id="btnAlerta_1"  fill="solid">
-            Terminar asistencia
-          </ion-button>
-          <ion-alert
+        ></ion-alert>
+      </ion-col>
+      <ion-col>
+        <!-- Botón Terminar asistencia -->
+        <ion-button id="btnAlerta_1" fill="solid">
+          Terminar asistencia
+        </ion-button>
+        <ion-alert
           trigger="btnAlerta_1"
           header="Advertencia"
           subHeader="Nuevo en Ionic"
-          message="Esta seguro de TERMINAR de pasar asistencia?"
+          message="¿Está seguro de TERMINAR de pasar asistencia?"
           [buttons]="alertButtons_1"
           backdropDismiss="false"
-          >
-        </ion-alert></ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+        ></ion-alert>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
