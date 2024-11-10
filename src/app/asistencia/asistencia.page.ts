@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class AsistenciaPage implements OnInit {
   accion:string=''
-  hola:string='elellelelelel'
+  hola:string='QR EJEMPLO'
   clase:string=''
 
   accion_1: string=''//cuidado con la reutilizacion de codigo, con la parte del hadler

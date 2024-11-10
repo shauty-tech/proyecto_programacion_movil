@@ -1,36 +1,46 @@
 <ion-header>
-  <ion-toolbar color="secondary">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text="Volver" color="light"></ion-back-button>
-    </ion-buttons>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Registrar cuenta</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form (submit)="register()">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <ion-input [(ngModel)]="name" type="text" name="name" required></ion-input>
-        </ion-item>
+  <form (ngSubmit)="register()">
+    <ion-item>
+      <ion-label position="floating">Correo electrónico <p class="color=primary">*OBLIGATORIO</p></ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+    </ion-item>
 
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input [(ngModel)]="email" type="email" name="email" required></ion-input>
-        </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña <p class="color=primary">*OBLIGATORIO</p></ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+    </ion-item>
 
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input [(ngModel)]="password" type="password" name="password" required></ion-input>
-        </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nombre <p class="color=primary">*OBLIGATORIO</p> </ion-label>
+      <ion-input type="text" [(ngModel)]="name" name="name" required></ion-input>
+    </ion-item>
 
-        <ion-button expand="full" type="submit">Registrar</ion-button>
-      </form>
-      <ion-button expand="full" routerLink="/login">¿Ya tienes cuenta? Inicia sesión</ion-button>
-    </ion-card-content>
-  </ion-card>
+    <ion-item>
+      <ion-label position="floating">Segundo Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="segnom" name="segnom"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Primer Apellido <p class="color=primary">*OBLIGATORIO</p></ion-label>
+      <ion-input type="text" [(ngModel)]="apellPat" name="apellPat" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Segundo Apellido</ion-label>
+      <ion-input type="text" [(ngModel)]="apellMat" name="apellMat" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo Personal</ion-label>
+      <ion-input type="email" [(ngModel)]="emailAlt" name="emailAlt"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Registrar</ion-button>
+  </form>
 </ion-content>

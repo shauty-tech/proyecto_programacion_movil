@@ -18,12 +18,6 @@ export class MenuProfesorPage implements OnInit {
     titulo:'Asistencia en linea',
     icono:'alarm'
   },
-    {
-      ruta:'/ingresar-asignatura',
-      titulo:'Ingresar asignatura',
-      icono:'add-circle'
-
-  },
   {
     ruta:'/ver-asistencia',
     titulo:'Ver asistencia',

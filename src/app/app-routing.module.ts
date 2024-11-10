@@ -20,10 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./ver-asistencia/ver-asistencia.module').then( m => m.VerAsistenciaPageModule)
   },
   {
-    path: 'ingresar-asignatura',
-    loadChildren: () => import('./ingresar-asignatura/ingresar-asignatura.module').then( m => m.IngresarAsignaturaPageModule)
-  },
-  {
     path: 'menu-asignatura-1',
     loadChildren: () => import('./menu-asignatura-1/menu-asignatura-1.module').then( m => m.MenuAsignatura1PageModule)
   },
@@ -58,7 +54,8 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login/login.module').then( m => m.LoginPageModule)
-  },  {
+  },
+  {
     path: 'registro',
     loadChildren: () => import('./login/registro/registro.module').then( m => m.RegistroPageModule)
   },

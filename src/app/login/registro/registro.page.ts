@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { AuthService } from '../../services/auth.service'; // Asegúrate de que el servicio esté importado
+import { AuthService } from '../../services/auth.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-registro',
@@ -13,35 +14,82 @@ export class RegistroPage implements OnInit {
   email: string = '';
   password: string = '';
   name: string = ''; // Nombre del usuario
+  segnom: string = ''; // Segundo nombre
+  apellPat: string = ''; // Apellido paterno
+  apellMat: string = ''; // Apellido materno
+  emailAlt: string = ''; // Correo alternativo
 
   constructor(
     private router: Router,
     private alertController: AlertController,
-    private authService: AuthService // Inyectamos el servicio AuthService
+    private authService: AuthService,
+    private firestore: AngularFirestore // Inyectamos AngularFirestore
   ) { }
 
   ngOnInit() {}
 
-  // Método para registrar un nuevo usuario
-  async register() {
-    try {
-      const userCredential = await this.authService.register(this.email, this.password, this.name);
+  validateEmail(email: string): boolean {
+    const regex = /^(.*)(@profesor\.cl|@alumno\.cl)$/;
+    return regex.test(email);
+  }
 
-      // Mostrar alerta de éxito
+  async register() {
+    if (!this.name || !this.apellPat || !this.email || !this.password) {
+      const alert = await this.alertController.create({
+        header: 'Campos incompletos',
+        message: 'Por favor, complete todos los campos obligatorios (nombre, apellido paterno, correo y contraseña).',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    if (!this.validateEmail(this.email)) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'El correo electrónico debe terminar en @profesor.cl o @alumno.cl.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    try {
+      const userCredential = await this.authService.register(
+        this.email, 
+        this.password, 
+        this.name,
+        this.segnom,
+        this.apellPat,
+        this.apellMat,
+        this.emailAlt
+      );
+
+      const user = userCredential.user;
+      const uid = user.uid;
+
+      // Crear un objeto con los datos del alumno
+      const alumnoData = {
+        UID: uid,
+        Nombre: this.name,
+        Apellido: this.apellPat,
+      };
+
+      // Guardar los datos del alumno en Firestore
+      await this.firestore.collection('Ramos/Lenguaje004D/Alumnos').doc(uid).set(alumnoData);
+
       const alert = await this.alertController.create({
         header: '¡Éxito!',
         message: 'Cuenta registrada con éxito.',
         buttons: [{
           text: 'Aceptar',
           handler: () => {
-            // Redirigimos al login o a la página deseada
             this.router.navigate(['/login']);
           }
         }]
       });
       await alert.present();
     } catch (error: any) {
-      // Manejo de errores
       let errorMessage = 'Ocurrió un error durante el registro. Intenta nuevamente.';
       if (error.code === 'auth/email-already-in-use') {
         errorMessage = 'El correo electrónico ya está registrado.';
