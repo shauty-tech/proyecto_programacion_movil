@@ -12,9 +12,9 @@
     <ion-list-header mode="ios" color="primary">
       <ion-label color="light">Asignaturas</ion-label>
     </ion-list-header>
-    <ion-item detail="true" routerLink="{{ item.ruta }}" *ngFor="let item of vinculos">
-      <ion-label class="i-text-capitalize">{{ item.titulo }}</ion-label>
-      <ion-icon name="{{ item.icono }}" slot="start"></ion-icon>
+    <ion-item *ngFor="let vinculo of vinculos" (click)="goToAsistencia(vinculo.uid)">
+      <ion-icon [name]="vinculo.icono" slot="start"></ion-icon>
+      <ion-label>{{ vinculo.titulo }}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

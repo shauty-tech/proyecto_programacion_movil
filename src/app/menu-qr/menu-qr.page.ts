@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { getAuth } from 'firebase/auth';
-
+import { Router } from '@angular/router';
 interface Ramo {
   titulo: string;
   UIDProfesor: string;
@@ -13,9 +13,9 @@ interface Ramo {
   styleUrls: ['./menu-qr.page.scss'],
 })
 export class MenuQRPage implements OnInit {
-  vinculos: { ruta: string; titulo: string; icono: string }[] = [];
+  vinculos: { ruta: string; titulo: string; icono: string; uid: string }[] = [];
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore,private router: Router) {}
 
   ngOnInit() {
     this.loadRamos();
@@ -38,9 +38,14 @@ export class MenuQRPage implements OnInit {
         ruta: '/asistencia',
         titulo: doc.id,  // Usa el ID del documento como título
         icono: 'book-outline',
+        uid: doc.id,     // Agrega el UID del documento
       }));
     } else {
       console.error('No hay usuario autenticado');
     }
+
+  }
+  goToAsistencia(uid: string) {
+    this.router.navigate(['/asistencia'], { queryParams: { clase: uid } });
   }
 }

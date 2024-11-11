@@ -9,27 +9,14 @@
 
 <ion-content>
   <ion-text class="ion-text-center">
-    <h1>QR en linea</h1>
+    <h1>QR en línea</h1>
   </ion-text>
   <ion-grid>
-    <ion-row>
-      <ion-col></ion-col>
-      <ion-col size="8">
-        <!-- Código QR -->
-        <qr-code [value]="hola" size="300" errorCorrectionLevel="M"></qr-code>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-    <ion-row class="ion-text-center">
-      <ion-col></ion-col>
-      <ion-col>
-        <!-- Botón Generar QR -->
-        <ion-button (click)="generateQR()" color="primary" expand="block">
-          Generar QR
-        </ion-button>
-      </ion-col>
-      <ion-col></ion-col>
-    </ion-row>
+    <div *ngIf="qrData">
+      <!-- Usar el componente qr-code correctamente -->
+      <qr-code [value]="qrData" [size]="256" [errorCorrectionLevel]="'M'"></qr-code>
+    </div>
+    <ion-button (click)="generateQR()">Generar Código QR</ion-button>
   </ion-grid>
 </ion-content>
 

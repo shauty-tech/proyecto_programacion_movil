@@ -31,6 +31,7 @@
     "@capacitor/status-bar": "6.0.1",
     "@firebase/firestore": "^4.7.4",
     "@ionic/angular": "^8.0.0",
+    "angularx-qrcode": "^18.0.2",
     "firebase": "^10.14.1",
     "ionicons": "^7.0.0",
     "ng-qrcode": "^18.0.0",
