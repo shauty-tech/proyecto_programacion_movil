@@ -74,12 +74,13 @@ export class RegistroPage implements OnInit {
         Nombre: this.name,
         Apellido: this.apellPat,
       };
-
+      
       // Guardar los datos del alumno en Firestore
-      await this.firestore.collection('Ramos/Lenguaje004D/Alumnos').doc(uid).set(alumnoData);
-      await this.firestore.collection('Ramos/Ingles003F/Alumnos').doc(uid).set(alumnoData);
-      await this.firestore.collection('Ramos/Matematicas001A/Alumnos').doc(uid).set(alumnoData);
-
+      if (this.email.endsWith('@alumno.cl')) {
+        await this.firestore.collection('Ramos/Lenguaje004D/Alumnos').doc(uid).set(alumnoData);
+        await this.firestore.collection('Ramos/Ingles003F/Alumnos').doc(uid).set(alumnoData);
+        await this.firestore.collection('Ramos/Matematicas001A/Alumnos').doc(uid).set(alumnoData);
+      }
       const alert = await this.alertController.create({
         header: '¡Éxito!',
         message: 'Cuenta registrada con éxito.',
