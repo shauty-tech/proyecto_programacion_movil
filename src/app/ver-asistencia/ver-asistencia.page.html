@@ -9,6 +9,6 @@
        <ion-label color="light">Menú por Asignaturas</ion-label>
      </ion-list-header>
   
-     <ion-item detail="true" routerLink="{{item.ruta}}" *ngFor="let item of vinculos" >
-      <ion-label class="i-text-capitalize">{{item.titulo}}</ion-label>
+     <ion-item *ngFor="let vinculo of vinculos" (click)="goToAsignatura(vinculo.ruta, vinculo.titulo)">
+      <ion-label>{{ vinculo.titulo }}</ion-label>
     </ion-item>
