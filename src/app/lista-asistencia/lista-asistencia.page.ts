@@ -41,7 +41,7 @@ export class ListaAsistenciaPage implements OnInit {
         const data = doc.data();
         return {
           nombre: `${data['Nombre']} ${data['Apellido']}`,  // Nombre completo del alumno
-          asistencia: data['Asistencia'] ? 'Sí asistió' : 'No asistió'  // Estado de asistencia
+          asistencia: data['Asistencia']  // Estado de asistencia como booleano
         };
       });
 
