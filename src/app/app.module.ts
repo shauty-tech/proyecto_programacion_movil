@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';  // Importa Firestore
 import { environment } from '../environments/environment';
 import { QrCodeModule } from 'ng-qrcode';
-
+import { IonicStorageModule } from '@ionic/storage-angular'; // Importamos IonicStorageModule
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +23,8 @@ import { QrCodeModule } from 'ng-qrcode';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,  // Agrega Firestore aquí
-    QrCodeModule
+    QrCodeModule,
+    IonicStorageModule.forRoot() // Inicializamos IonicStorageModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

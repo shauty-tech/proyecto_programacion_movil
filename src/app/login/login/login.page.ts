@@ -1,16 +1,17 @@
 import { User } from './../../interfaces/usuario';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Storage } from '@ionic/storage-angular'; // Importamos Storage
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
@@ -19,26 +20,39 @@ export class LoginPage {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private toastController: ToastController
-  ) {}
+    private toastController: ToastController,
+    private storage: Storage // Inyectamos Ionic Storage
+  ) {
+    this.storage.create(); // Creamos la instancia de storage
+  }
+
+  ngOnInit() {
+    // Recuperar email y password desde IonicStorage y rellenar el formulario
+    this.storage.get('email').then(storedEmail => {
+      if (storedEmail) {
+        this.form.controls['email'].setValue(storedEmail);
+      }
+    });
+
+    this.storage.get('password').then(storedPassword => {
+      if (storedPassword) {
+        this.form.controls['password'].setValue(storedPassword);
+      }
+    });
+  }
 
   login() {
-    // Si el formulario es inválido, muestra un toast y termina la ejecución.
     if (this.form.invalid) {
       this.presentToast('Por favor, completa los campos correctamente.');
       return;
     }
 
-    // Aquí declaramos 'user' y le asignamos el valor del formulario.
     const user = this.form.value as User;
 
-    // Llamada al servicio de autenticación
     this.authService.login(user)
       .then((firebaseUser) => {
-        // Muestra el 'uid' del usuario autenticado en consola
         console.log('UID del usuario autenticado:', firebaseUser.user?.uid);
 
-        // Dependiendo del correo, navega a la vista correspondiente.
         if (user.email.endsWith('@alumno.cl')) {
           this.presentToast('Inicio de sesión exitoso como estudiante.');
           this.router.navigate(['/menu-estudiante']);
@@ -55,7 +69,6 @@ export class LoginPage {
       });
   }
 
-  // Función para mostrar Toast
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,

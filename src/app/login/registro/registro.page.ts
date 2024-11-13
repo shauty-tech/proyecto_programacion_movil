@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Storage } from '@ionic/storage-angular'; // Importamos Storage
 
 @Component({
   selector: 'app-registro',
@@ -10,7 +11,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-
   email: string = '';
   password: string = '';
   name: string = ''; // Nombre del usuario
@@ -23,8 +23,11 @@ export class RegistroPage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     private authService: AuthService,
-    private firestore: AngularFirestore // Inyectamos AngularFirestore
-  ) { }
+    private firestore: AngularFirestore, // Inyectamos AngularFirestore
+    private storage: Storage // Inyectamos Ionic Storage
+  ) {
+    this.storage.create(); // Creamos la instancia de storage
+  }
 
   ngOnInit() {}
 
@@ -81,6 +84,11 @@ export class RegistroPage implements OnInit {
         await this.firestore.collection('Ramos/Ingles003F/Alumnos').doc(uid).set(alumnoData);
         await this.firestore.collection('Ramos/Matematicas001A/Alumnos').doc(uid).set(alumnoData);
       }
+      
+      // Guardar email y password en IonicStorage
+      await this.storage.set('email', this.email);
+      await this.storage.set('password', this.password);
+
       const alert = await this.alertController.create({
         header: '¡Éxito!',
         message: 'Cuenta registrada con éxito.',
