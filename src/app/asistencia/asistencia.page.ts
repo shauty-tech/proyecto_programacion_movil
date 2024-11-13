@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; 
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { getAuth } from 'firebase/auth';
@@ -13,6 +13,7 @@ export class AsistenciaPage implements OnInit {
   clase: string = ''; // La clase seleccionada (UID del documento)
   qrData: string = ''; // Dato QR generado
   alumnos: any[] = []; // Alumnos fetched from Firestore
+  uidClaseGenerada: string = ''; // UID of the created "Clase" instance
 
   alertButtons_1 = [
     {
@@ -37,8 +38,7 @@ export class AsistenciaPage implements OnInit {
       text: 'Aceptar',
       cssClass: 'btnAceptarStyle',
       handler: () => {
-        this.accion = 'Presionó aceptar';
-        this.router.navigate(['/menu-profesor']);
+        this.cancelarAsistencia(); // Llama a cancelarAsistencia solo después de confirmar
       },
     },
     {
@@ -72,15 +72,15 @@ export class AsistenciaPage implements OnInit {
         .get()
         .toPromise();
 
-        this.alumnos = alumnosSnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            uid: doc.id,
-            nombreCompleto: `${data['Nombre']} ${data['Apellido']}`, // Use bracket notation to access fields
-            asistencia: data['Asistencia'] ?? false // Use bracket notation and default to false if Asistencia is missing
-          };
-        });
-        
+      this.alumnos = alumnosSnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          uid: doc.id,
+          nombreCompleto: `${data['Nombre']} ${data['Apellido']}`, // Use bracket notation to access fields
+          asistencia: data['Asistencia'] ?? false // Use bracket notation and default to false if Asistencia is missing
+        };
+      });
+      
       console.log('Alumnos:', this.alumnos); // Verifica la información de los alumnos en la consola
     } catch (error) {
       console.error('Error al obtener los alumnos:', error);
@@ -103,12 +103,12 @@ export class AsistenciaPage implements OnInit {
           fecha_inicio: fechaHoraActual,
         });
 
-        const uidClaseGenerada = docRef.id; // Obtenemos el UID del documento recién creado en 'Clase'
+        this.uidClaseGenerada = docRef.id; // Store the UID of the created "Clase" instance
 
         // Agregar la subcolección 'Alumnos' en la nueva instancia de 'Clase'
         const batch = this.firestore.firestore.batch();
         this.alumnos.forEach(alumno => {
-          const alumnoRef = this.firestore.collection('Clase').doc(uidClaseGenerada)
+          const alumnoRef = this.firestore.collection('Clase').doc(this.uidClaseGenerada)
             .collection('Alumnos').doc(alumno.uid).ref;
           
           batch.set(alumnoRef, {
@@ -127,7 +127,7 @@ export class AsistenciaPage implements OnInit {
           UIDProfesor: uidProfesor,
           Clase: this.clase,
           FechaHora: fechaHoraActual,
-          UIDClaseGenerada: uidClaseGenerada,
+          UIDClaseGenerada: this.uidClaseGenerada,
         };
 
         this.qrData = JSON.stringify(qrInfo); // Convertir el objeto a un string JSON para el QR
@@ -138,6 +138,36 @@ export class AsistenciaPage implements OnInit {
       }
     } else {
       console.error('No hay usuario autenticado');
+    }
+  }
+
+  async cancelarAsistencia() {
+    if (!this.uidClaseGenerada) {
+      console.error('No UID for Clase instance found');
+      return;
+    }
+
+    try {
+      // Delete all documents in the 'Alumnos' subcollection
+      const alumnosSnapshot = await this.firestore.collection('Clase')
+        .doc(this.uidClaseGenerada)
+        .collection('Alumnos')
+        .get()
+        .toPromise();
+
+      const batch = this.firestore.firestore.batch();
+      alumnosSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+
+      // Commit the batch deletion for 'Alumnos' documents
+      await batch.commit();
+
+      // Delete the 'Clase' document itself
+      await this.firestore.collection('Clase').doc(this.uidClaseGenerada).delete();
+
+      // Navigate back after successful deletion
+      this.router.navigate(['/menu-profesor']);
+    } catch (error) {
+      console.error('Error deleting Clase instance:', error);
     }
   }
 }
