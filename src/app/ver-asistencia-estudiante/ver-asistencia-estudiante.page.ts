@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../services/auth.service';
+import { combineLatest, of } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ver-asistencia-estudiante',
@@ -8,64 +10,61 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./ver-asistencia-estudiante.page.scss'],
 })
 export class VerAsistenciaEstudiantePage implements OnInit {
-  asistenciasPorRamo: { [key: string]: number } = {};
-  asistenciaArray: { ramo: string; porcentaje: number }[] = [];
+  asistenciaArray: { ramo: string; totalAsistencias: number; totalClases: number }[] = [];
+  errorMessage: string | null = null;
 
   constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
-  async ngOnInit() {
-    try {
-      const usuario = await this.authService.getUser().toPromise();
-      const uidEstudiante = usuario?.uid;
-  
-      if (uidEstudiante) {
-        await this.calcularAsistenciasPorRamo(uidEstudiante);
-        
-        // Convertir asistenciasPorRamo a un array
-        this.asistenciaArray = Object.keys(this.asistenciasPorRamo).map(ramo => ({
-          ramo: ramo,
-          porcentaje: this.asistenciasPorRamo[ramo]
-        }));
-  
-        console.log('Asistencia Array:', this.asistenciaArray); // Agregar log para verificar los datos
-      }
-    } catch (error) {
-      console.error('Error al obtener el UID del usuario:', error);
-    }
-  }
-  
-
-  async calcularAsistenciasPorRamo(uidEstudiante: string) {
-    try {
-      const clasesSnapshot = await this.firestore.collection('Clase').get().toPromise();
-      const asistenciaPorRamo: { [key: string]: { total: number, asistidas: number } } = {};
-  
-      for (const claseDoc of clasesSnapshot.docs) {
-        const ramo = claseDoc.data()['Ramo'];
-        const alumnosSnapshot = await claseDoc.ref.collection('Alumnos').where('UID', '==', uidEstudiante).get();
-  
-        if (!asistenciaPorRamo[ramo]) {
-          asistenciaPorRamo[ramo] = { total: 0, asistidas: 0 };
+  ngOnInit() {
+    this.authService.getUser().pipe(
+      switchMap((usuario) => {
+        const uidEstudiante = usuario?.uid;
+        if (!uidEstudiante) {
+          throw new Error('No se obtuvo el UID del estudiante.');
         }
-  
-        asistenciaPorRamo[ramo].total += alumnosSnapshot.size;
-  
-        alumnosSnapshot.forEach(alumnoDoc => {
-          const asistencia = alumnoDoc.data()?.['Asistencia'];
-          if (asistencia === true) {
-            asistenciaPorRamo[ramo].asistidas++;
-          }
+        return this.calcularAsistenciasPorRamo(uidEstudiante);
+      }),
+      catchError((error) => {
+        this.errorMessage = error.message;
+        console.error('Error:', error);
+        return of([]);
+      })
+    ).subscribe((asistencias) => {
+      this.asistenciaArray = asistencias;
+      console.log('Array de Asistencias:', this.asistenciaArray);
+    });
+  }
+
+  calcularAsistenciasPorRamo(uidEstudiante: string) {
+    return this.firestore.collection('Ramos').snapshotChanges().pipe(
+      switchMap((ramosSnapshot) => {
+        const ramoObservables = ramosSnapshot.map((ramo) => {
+          const ramoId = ramo.payload.doc.id;
+          return this.firestore.collection('Clase', (ref) => ref.where('Ramo', '==', ramoId))
+            .snapshotChanges().pipe(
+              switchMap((clasesSnapshot) => {
+                const totalClases = clasesSnapshot.length; // Contar todas las clases en el ramo
+                const claseObservables = clasesSnapshot.map((clase) =>
+                  clase.payload.doc.ref.collection('Alumnos')
+                    .where('UID', '==', uidEstudiante)
+                    .where('Asistencia', '==', true) // Filtrar solo cuando Asistencia es true
+                    .get().then((alumnosSnapshot) => !alumnosSnapshot.empty ? 1 : 0)
+                );
+
+                // Sumar el total de asistencias
+                return Promise.all(claseObservables).then((asistencias) => {
+                  const totalAsistencias = asistencias.reduce((a, b) => a + b, 0);
+                  return { ramo: ramoId, totalAsistencias, totalClases };
+                });
+              }),
+              catchError((error) => {
+                console.warn(`Error al procesar ramo ${ramoId}:`, error);
+                return of({ ramo: ramoId, totalAsistencias: 0, totalClases: 0 });
+              })
+            );
         });
-      }
-  
-      for (const ramo in asistenciaPorRamo) {
-        const datosRamo = asistenciaPorRamo[ramo];
-        this.asistenciasPorRamo[ramo] = (datosRamo.asistidas / datosRamo.total) * 100;
-      }
-  
-      console.log('Asistencias por ramo:', this.asistenciasPorRamo); // Agrega log para verificar datos
-    } catch (error) {
-      console.error('Error al calcular el porcentaje de asistencia:', error);
-    }
+        return combineLatest(ramoObservables);
+      })
+    );
   }
 }
