@@ -43,15 +43,15 @@ export class VerAsistenciaEstudiantePage implements OnInit {
           return this.firestore.collection('Clase', (ref) => ref.where('Ramo', '==', ramoId))
             .snapshotChanges().pipe(
               switchMap((clasesSnapshot) => {
-                const totalClases = clasesSnapshot.length; // Contar todas las clases en el ramo
+                const totalClases = clasesSnapshot.length;
                 const claseObservables = clasesSnapshot.map((clase) =>
                   clase.payload.doc.ref.collection('Alumnos')
                     .where('UID', '==', uidEstudiante)
-                    .where('Asistencia', '==', true) // Filtrar solo cuando Asistencia es true
+                    .where('Asistencia', '==', true)
                     .get().then((alumnosSnapshot) => !alumnosSnapshot.empty ? 1 : 0)
                 );
 
-                // Sumar el total de asistencias
+
                 return Promise.all(claseObservables).then((asistencias) => {
                   const totalAsistencias = asistencias.reduce((a, b) => a + b, 0);
                   return { ramo: ramoId, totalAsistencias, totalClases };

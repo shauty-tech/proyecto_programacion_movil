@@ -34,18 +34,18 @@ export class MenuEstudiantePage implements OnInit {
   constructor(private router: Router, private alertController: AlertController, private modalController: ModalController) { }
 
   ngOnInit() {
-    // Comprobamos si el escáner de códigos de barras es compatible
+
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
 
-    // Verificamos si el usuario está autenticado y obtenemos su UID
+
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
       const userId = user.uid;
       console.log("ID de usuario:", userId);
-      // Aquí puedes pasar el ID del usuario a una lista, función, etc.
+
     } else {
       console.log("No hay ningún usuario autenticado.");
     }

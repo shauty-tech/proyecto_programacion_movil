@@ -28,20 +28,20 @@ export class RegistrarCamaraPage implements OnInit {
       return;
     }
 
-    // Escanea el código QR
+
     const { barcodes } = await BarcodeScanner.scan();
     if (barcodes.length > 0) {
       const qrData = barcodes[0].displayValue;
 
       if (qrData) {
-        // Intenta parsear el JSON del QR
+
         try {
           const qrInfo = JSON.parse(qrData);
           console.log('Datos del QR:', qrInfo);
 
-          const uidClaseGenerada = qrInfo.UIDClaseGenerada; // UID de la clase generada
+          const uidClaseGenerada = qrInfo.UIDClaseGenerada;
 
-          // Llama al método para verificar la asistencia
+
           await this.verifyAttendance(uidClaseGenerada);
         } catch (error) {
           console.error('Error al parsear el QR:', error);
@@ -51,25 +51,25 @@ export class RegistrarCamaraPage implements OnInit {
   }
 
   async verifyAttendance(uidClaseGenerada: string): Promise<void> {
-    // Obtener el UID del usuario autenticado
+
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
       const uidUsuario = user.uid;
 
-      // Busca al estudiante en la subcolección 'Alumnos' de la clase correspondiente
+
       try {
         const alumnoSnapshot = await this.firestore
           .collection('Clase')
           .doc(uidClaseGenerada)
           .collection('Alumnos')
-          .doc(uidUsuario) // Busca el documento con el UID del usuario
+          .doc(uidUsuario)
           .get()
           .toPromise();
 
         if (alumnoSnapshot.exists) {
-          // Si el estudiante existe en la clase, actualiza su asistencia a true
+    
           await this.firestore
             .collection('Clase')
             .doc(uidClaseGenerada)

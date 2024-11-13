@@ -13,7 +13,6 @@
   </ion-text>
 
   <ion-list lines="full" inset="true">
-    <!-- Cambiamos 'porcentaje' a 'totalAsistencias' -->
     <ion-item *ngFor="let asistencia of asistenciaArray" class="asistencia-item">
       <div class="ramo">{{ asistencia.ramo }}</div>
   <div class="asistencias">{{ asistencia.totalAsistencias }} / {{ asistencia.totalClases }}</div>

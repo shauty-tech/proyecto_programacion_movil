@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Storage } from '@ionic/storage-angular'; // Importamos Storage
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-registro',
@@ -13,20 +13,20 @@ import { Storage } from '@ionic/storage-angular'; // Importamos Storage
 export class RegistroPage implements OnInit {
   email: string = '';
   password: string = '';
-  name: string = ''; // Nombre del usuario
-  segnom: string = ''; // Segundo nombre
-  apellPat: string = ''; // Apellido paterno
-  apellMat: string = ''; // Apellido materno
-  emailAlt: string = ''; // Correo alternativo
+  name: string = '';
+  segnom: string = '';
+  apellPat: string = '';
+  apellMat: string = '';
+  emailAlt: string = '';
 
   constructor(
     private router: Router,
     private alertController: AlertController,
     private authService: AuthService,
-    private firestore: AngularFirestore, // Inyectamos AngularFirestore
-    private storage: Storage // Inyectamos Ionic Storage
+    private firestore: AngularFirestore,
+    private storage: Storage
   ) {
-    this.storage.create(); // Creamos la instancia de storage
+    this.storage.create();
   }
 
   ngOnInit() {}
@@ -71,21 +71,21 @@ export class RegistroPage implements OnInit {
       const user = userCredential.user;
       const uid = user.uid;
 
-      // Crear un objeto con los datos del alumno
+   
       const alumnoData = {
         UID: uid,
         Nombre: this.name,
         Apellido: this.apellPat,
       };
       
-      // Guardar los datos del alumno en Firestore
+   
       if (this.email.endsWith('@alumno.cl')) {
         await this.firestore.collection('Ramos/Lenguaje004D/Alumnos').doc(uid).set(alumnoData);
         await this.firestore.collection('Ramos/Ingles003F/Alumnos').doc(uid).set(alumnoData);
         await this.firestore.collection('Ramos/Matematicas001A/Alumnos').doc(uid).set(alumnoData);
       }
       
-      // Guardar email y password en IonicStorage
+
       await this.storage.set('email', this.email);
       await this.storage.set('password', this.password);
 

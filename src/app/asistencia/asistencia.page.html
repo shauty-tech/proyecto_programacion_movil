@@ -13,7 +13,6 @@
   </ion-text>
   <ion-grid>
     <div *ngIf="qrData">
-      <!-- Usar el componente qr-code correctamente -->
       <qr-code [value]="qrData" [size]="256" [errorCorrectionLevel]="'M'"></qr-code>
     </div>
     <ion-button (click)="generateQR()">Generar Código QR</ion-button>
@@ -25,7 +24,6 @@
     <ion-row>
       <ion-col></ion-col>
       <ion-col>
-        <!-- Botón Cancelar asistencia -->
         <ion-button id="btnAlerta_2" fill="solid">
           Cancelar asistencia
         </ion-button>
@@ -39,7 +37,6 @@
         ></ion-alert>
       </ion-col>
       <ion-col>
-        <!-- Botón Terminar asistencia -->
         <ion-button id="btnAlerta_1" fill="solid">
           Terminar asistencia
         </ion-button>

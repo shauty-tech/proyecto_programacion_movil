@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Storage } from '@ionic/storage-angular'; // Importamos Storage
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +21,13 @@ export class LoginPage implements OnInit {
     private router: Router,
     private authService: AuthService,
     private toastController: ToastController,
-    private storage: Storage // Inyectamos Ionic Storage
+    private storage: Storage
   ) {
-    this.storage.create(); // Creamos la instancia de storage
+    this.storage.create();
   }
 
   ngOnInit() {
-    // Recuperar email y password desde IonicStorage y rellenar el formulario
+
     this.storage.get('email').then(storedEmail => {
       if (storedEmail) {
         this.form.controls['email'].setValue(storedEmail);

@@ -10,7 +10,7 @@ import { getAuth } from 'firebase/auth';
 })
 export class MenuAsignatura1Page implements OnInit {
   vinculos: any[] = [];
-  ramoSeleccionado: string = '';  // Variable para almacenar el ramo seleccionado
+  ramoSeleccionado: string = '';
 
   constructor(
     private firestore: AngularFirestore,
@@ -19,12 +19,12 @@ export class MenuAsignatura1Page implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtener el ramo seleccionado desde los parámetros de consulta
+
     this.route.queryParams.subscribe(params => {
-      this.ramoSeleccionado = params['clase']; // Obtener el ramo seleccionado
-      console.log('Ramo seleccionado:', this.ramoSeleccionado); // Verificar que el parámetro llegue correctamente
+      this.ramoSeleccionado = params['clase'];
+      console.log('Ramo seleccionado:', this.ramoSeleccionado);
       if (this.ramoSeleccionado) {
-        this.loadClases(); // Cargar las clases correspondientes al ramo
+        this.loadClases();
       }
     });
   }
@@ -40,18 +40,18 @@ export class MenuAsignatura1Page implements OnInit {
           .get()
           .toPromise();
 
-        console.log('Clases encontradas:', clasesSnapshot.docs.length);  // Verificar cuántas clases se obtienen
+        console.log('Clases encontradas:', clasesSnapshot.docs.length);
 
-        // Mapear las clases encontradas a la estructura de vinculos
+
         this.vinculos = clasesSnapshot.docs.map((doc) => {
           const clase = doc.data();
-          const fechaInicio = clase['fecha_inicio']; // Usar el string directamente
+          const fechaInicio = clase['fecha_inicio'];
 
           return {
             ruta: '/lista-asistencia',
-            titulo: fechaInicio,  // Usar la fecha_inicio como título
-            icono: '',  // Puedes agregar un icono aquí si lo deseas
-            uid: doc.id  // UID de la clase
+            titulo: fechaInicio,
+            icono: '',
+            uid: doc.id
           };
         });
 

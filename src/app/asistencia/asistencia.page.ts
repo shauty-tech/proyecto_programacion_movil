@@ -10,10 +10,10 @@ import { getAuth } from 'firebase/auth';
 })
 export class AsistenciaPage implements OnInit {
   accion: string = '';
-  clase: string = ''; // La clase seleccionada (UID del documento)
-  qrData: string = ''; // Dato QR generado
-  alumnos: any[] = []; // Alumnos fetched from Firestore
-  uidClaseGenerada: string = ''; // UID of the created "Clase" instance
+  clase: string = '';
+  qrData: string = '';
+  alumnos: any[] = [];
+  uidClaseGenerada: string = '';
 
   alertButtons_1 = [
     {
@@ -38,7 +38,7 @@ export class AsistenciaPage implements OnInit {
       text: 'Aceptar',
       cssClass: 'btnAceptarStyle',
       handler: () => {
-        this.cancelarAsistencia(); // Llama a cancelarAsistencia solo después de confirmar
+        this.cancelarAsistencia();
       },
     },
     {
@@ -53,12 +53,10 @@ export class AsistenciaPage implements OnInit {
   constructor(private router: Router, private firestore: AngularFirestore, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // Obtener el parámetro de la clase seleccionada (UID del documento)
+
     this.route.queryParams.subscribe(params => {
-      this.clase = params['clase'] || ''; // Recibe el UID del documento
-      console.log('Clase UID:', this.clase); // Verifica que esté llegando correctamente
-      
-      // Fetch students from the specified 'Ramo' document
+      this.clase = params['clase'] || '';
+      console.log('Clase UID:', this.clase);
       this.getAlumnosFromRamo();
     });
   }
@@ -67,7 +65,7 @@ export class AsistenciaPage implements OnInit {
     try {
       const alumnosSnapshot = await this.firestore
         .collection('Ramos')
-        .doc(this.clase) // Use the UID of the selected 'Ramo'
+        .doc(this.clase)
         .collection('Alumnos')
         .get()
         .toPromise();
@@ -76,12 +74,12 @@ export class AsistenciaPage implements OnInit {
         const data = doc.data();
         return {
           uid: doc.id,
-          nombreCompleto: `${data['Nombre']} ${data['Apellido']}`, // Use bracket notation to access fields
-          asistencia: data['Asistencia'] ?? false // Use bracket notation and default to false if Asistencia is missing
+          nombreCompleto: `${data['Nombre']} ${data['Apellido']}`,
+          asistencia: data['Asistencia'] ?? false
         };
       });
       
-      console.log('Alumnos:', this.alumnos); // Verifica la información de los alumnos en la consola
+      console.log('Alumnos:', this.alumnos);
     } catch (error) {
       console.error('Error al obtener los alumnos:', error);
     }
@@ -93,9 +91,9 @@ export class AsistenciaPage implements OnInit {
   
     if (user) {
       const uidProfesor = user.uid;
-      const fechaHoraActual = new Date().toISOString(); // Fecha y hora actual en string ISO
+      const fechaHoraActual = new Date().toISOString();
   
-      // Crear una nueva instancia en la colección 'Clase'
+      
       try {
         const docRef = await this.firestore.collection('Clase').add({
           Ramo: this.clase,
@@ -103,9 +101,9 @@ export class AsistenciaPage implements OnInit {
           fecha_inicio: fechaHoraActual,
         });
 
-        this.uidClaseGenerada = docRef.id; // Store the UID of the created "Clase" instance
+        this.uidClaseGenerada = docRef.id;
 
-        // Agregar la subcolección 'Alumnos' en la nueva instancia de 'Clase'
+        
         const batch = this.firestore.firestore.batch();
         this.alumnos.forEach(alumno => {
           const alumnoRef = this.firestore.collection('Clase').doc(this.uidClaseGenerada)
@@ -115,14 +113,14 @@ export class AsistenciaPage implements OnInit {
             Nombre: alumno.nombreCompleto.split(' ')[0],
             Apellido: alumno.nombreCompleto.split(' ')[1],
             UID: alumno.uid,
-            Asistencia: false // Inicializa el campo 'Asistencia' en false
+            Asistencia: false 
           });
         });
 
-        // Ejecutar la operación en batch para agregar todos los alumnos
+       
         await batch.commit();
 
-        // Construir los datos del QR en formato JSON como string
+        
         const qrInfo = {
           UIDProfesor: uidProfesor,
           Clase: this.clase,
@@ -130,9 +128,9 @@ export class AsistenciaPage implements OnInit {
           UIDClaseGenerada: this.uidClaseGenerada,
         };
 
-        this.qrData = JSON.stringify(qrInfo); // Convertir el objeto a un string JSON para el QR
+        this.qrData = JSON.stringify(qrInfo); 
         
-        console.log("QR Data:", this.qrData); // Verificar en consola
+        console.log("QR Data:", this.qrData); 
       } catch (error) {
         console.error('Error al crear la instancia en Clase o agregar Alumnos:', error);
       }
@@ -148,7 +146,6 @@ export class AsistenciaPage implements OnInit {
     }
 
     try {
-      // Delete all documents in the 'Alumnos' subcollection
       const alumnosSnapshot = await this.firestore.collection('Clase')
         .doc(this.uidClaseGenerada)
         .collection('Alumnos')
@@ -158,13 +155,11 @@ export class AsistenciaPage implements OnInit {
       const batch = this.firestore.firestore.batch();
       alumnosSnapshot.docs.forEach(doc => batch.delete(doc.ref));
 
-      // Commit the batch deletion for 'Alumnos' documents
       await batch.commit();
 
-      // Delete the 'Clase' document itself
       await this.firestore.collection('Clase').doc(this.uidClaseGenerada).delete();
 
-      // Navigate back after successful deletion
+
       this.router.navigate(['/menu-profesor']);
     } catch (error) {
       console.error('Error deleting Clase instance:', error);

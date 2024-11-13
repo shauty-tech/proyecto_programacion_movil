@@ -17,7 +17,6 @@
       <p>UID de la clase: {{ uidClase }}</p>
     </ion-list-header>
 
-    <!-- Encabezados de la tabla -->
     <ion-grid fixed>
       <ion-row>
         <ion-col size="6" color="primary">NOMBRE COMPLETO</ion-col>
@@ -25,7 +24,6 @@
       </ion-row>
     </ion-grid>
 
-    <!-- Listado de alumnos y su estado de asistencia -->
     <ion-grid>
       <ion-row *ngFor="let alumno of alumnos">
         <ion-col size="6">

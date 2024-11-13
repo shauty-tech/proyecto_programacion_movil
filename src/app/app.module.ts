@@ -9,10 +9,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';  // Importa Firestore
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
 import { QrCodeModule } from 'ng-qrcode';
-import { IonicStorageModule } from '@ionic/storage-angular'; // Importamos IonicStorageModule
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,9 +22,9 @@ import { IonicStorageModule } from '@ionic/storage-angular'; // Importamos Ionic
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule,  // Agrega Firestore aquí
+    AngularFirestoreModule,
     QrCodeModule,
-    IonicStorageModule.forRoot() // Inicializamos IonicStorageModule
+    IonicStorageModule.forRoot()
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

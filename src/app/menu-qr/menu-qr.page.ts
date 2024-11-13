@@ -28,7 +28,7 @@ export class MenuQRPage implements OnInit {
     if (user) {
       const uidProfesor = user.uid;
 
-      // Realizar una consulta para obtener los ramos con UIDProfesor coincidente
+
       const ramosSnapshot = await this.firestore
         .collection<Ramo>('Ramos', (ref) => ref.where('UIDProfesor', '==', uidProfesor))
         .get()
@@ -36,9 +36,9 @@ export class MenuQRPage implements OnInit {
 
       this.vinculos = ramosSnapshot.docs.map((doc) => ({
         ruta: '/asistencia',
-        titulo: doc.id,  // Usa el ID del documento como título
+        titulo: doc.id,
         icono: 'book-outline',
-        uid: doc.id,     // Agrega el UID del documento
+        uid: doc.id,
       }));
     } else {
       console.error('No hay usuario autenticado');
