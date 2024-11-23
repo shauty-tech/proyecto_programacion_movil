@@ -32,24 +32,29 @@ export class RegistrarCamaraPage implements OnInit {
       return;
     }
 
-    const { barcodes } = await BarcodeScanner.scan();
-    if (barcodes.length > 0) {
-      const qrData = barcodes[0].displayValue;
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      if (barcodes.length > 0) {
+        const qrData = barcodes[0].displayValue;
 
-      if (qrData) {
-        try {
-          const qrInfo = JSON.parse(qrData);
-          console.log('Datos del QR:', qrInfo);
+        if (qrData) {
+          try {
+            const qrInfo = JSON.parse(qrData); // Parsear datos del QR
+            console.log('Datos del QR:', qrInfo);
 
-          const uidClaseGenerada = qrInfo.UIDClaseGenerada;
-          const docRamo = qrInfo.Clase; // Nombre del documento de la colección 'Ramos'
+            const uidClaseGenerada = qrInfo.UIDClaseGenerada;
+            const docRamo = qrInfo.Clase; // Nombre del documento de la colección 'Ramos'
 
-          await this.handleEnrollment(docRamo, uidClaseGenerada);
-        } catch (error) {
-          console.error('Error al parsear el QR:', error);
-          this.presentAlert('Error', 'No se pudo procesar el código QR.');
+            await this.handleEnrollment(docRamo, uidClaseGenerada);
+          } catch (error) {
+            console.error('Error al parsear el QR:', error);
+            this.presentAlert('Error', 'No se pudo procesar el código QR.');
+          }
         }
       }
+    } catch (error) {
+      console.error('Error durante el escaneo:', error);
+      this.presentAlert('Error', 'Hubo un problema al escanear el código QR.');
     }
   }
 
@@ -60,6 +65,24 @@ export class RegistrarCamaraPage implements OnInit {
       const uidUsuario = user.uid;
 
       try {
+        // Definir una interfaz para los datos de usuario
+        interface UserData {
+          nom: string;
+          apellPat: string;
+          apellMat: string;
+          email: string;
+        }
+
+        // Obtener los datos del usuario desde la colección 'users'
+        const userDoc = await this.firestore.collection('users').doc(uidUsuario).get().toPromise();
+        if (!userDoc.exists) {
+          console.error('El usuario no existe en la colección "users".');
+          this.presentAlert('Error', 'No se encontró tu información de usuario.');
+          return;
+        }
+
+        const userData = userDoc.data() as UserData; // Especificar el tipo esperado
+
         // Verificar si el estudiante ya está inscrito en el Ramo
         const alumnoSnapshot = await this.firestore
           .collection('Ramos')
@@ -87,7 +110,10 @@ export class RegistrarCamaraPage implements OnInit {
               .collection('Alumnos')
               .doc(uidUsuario)
               .set({
-                Nombre: user.displayName || 'Desconocido',
+                Nombre: userData.nom || 'Desconocido',
+                ApellidoPaterno: userData.apellPat || '',
+                ApellidoMaterno: userData.apellMat || '',
+                Email: userData.email || '',
                 Asistencia: false,
               });
 
@@ -100,7 +126,10 @@ export class RegistrarCamaraPage implements OnInit {
               .collection('Alumnos')
               .doc(uidUsuario)
               .set({
-                Nombre: user.displayName || 'Desconocido',
+                Nombre: userData.nom || 'Desconocido',
+                ApellidoPaterno: userData.apellPat || '',
+                ApellidoMaterno: userData.apellMat || '',
+                Email: userData.email || '',
                 UID: uidUsuario,
                 Asistencia: true,
               });
