@@ -114,7 +114,6 @@ export class RegistrarCamaraPage implements OnInit {
                 ApellidoPaterno: userData.apellPat || '',
                 ApellidoMaterno: userData.apellMat || '',
                 Email: userData.email || '',
-                Asistencia: false,
               });
 
             console.log('Estudiante inscrito correctamente en el ramo:', docRamo);
