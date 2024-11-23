@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { getAuth } from 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-registrar-camara',
@@ -13,9 +13,13 @@ export class RegistrarCamaraPage implements OnInit {
   isSupported = false;
   barcodes: Barcode[] = [];
 
-  constructor(private alertController: AlertController, private firestore: AngularFirestore) { }
+  constructor(
+    private alertController: AlertController,
+    private firestore: AngularFirestore,
+    private afAuth: AngularFireAuth
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
@@ -24,71 +28,93 @@ export class RegistrarCamaraPage implements OnInit {
   async scan(): Promise<void> {
     const granted = await this.requestPermissions();
     if (!granted) {
-      this.presentAlert();
+      this.presentAlert('Permiso denegado', 'Debes otorgar permisos de cámara para continuar.');
       return;
     }
-
 
     const { barcodes } = await BarcodeScanner.scan();
     if (barcodes.length > 0) {
       const qrData = barcodes[0].displayValue;
 
       if (qrData) {
-
         try {
           const qrInfo = JSON.parse(qrData);
           console.log('Datos del QR:', qrInfo);
 
           const uidClaseGenerada = qrInfo.UIDClaseGenerada;
+          const docRamo = qrInfo.Clase; // Nombre del documento de la colección 'Ramos'
 
-
-          await this.verifyAttendance(uidClaseGenerada);
+          await this.handleEnrollment(docRamo, uidClaseGenerada);
         } catch (error) {
           console.error('Error al parsear el QR:', error);
+          this.presentAlert('Error', 'No se pudo procesar el código QR.');
         }
       }
     }
   }
 
-  async verifyAttendance(uidClaseGenerada: string): Promise<void> {
-
-    const auth = getAuth();
-    const user = auth.currentUser;
+  async handleEnrollment(docRamo: string, uidClase: string): Promise<void> {
+    const user = await this.afAuth.currentUser;
 
     if (user) {
       const uidUsuario = user.uid;
 
-
       try {
+        // Verificar si el estudiante ya está inscrito en el Ramo
         const alumnoSnapshot = await this.firestore
-          .collection('Clase')
-          .doc(uidClaseGenerada)
+          .collection('Ramos')
+          .doc(docRamo)
           .collection('Alumnos')
           .doc(uidUsuario)
           .get()
           .toPromise();
 
         if (alumnoSnapshot.exists) {
-    
-          await this.firestore
-            .collection('Clase')
-            .doc(uidClaseGenerada)
-            .collection('Alumnos')
-            .doc(uidUsuario)
-            .update({ Asistencia: true });
-
-          console.log('Asistencia registrada para el estudiante:', uidUsuario);
-          this.presentSuccessAlert();
+          console.log('El estudiante ya está inscrito en este ramo.');
+          this.presentAlert('Información', 'Ya estás inscrito en este ramo.');
         } else {
-          console.error('El estudiante no está registrado en esta clase.');
-          this.presentErrorAlert('El estudiante no está registrado en esta clase.');
+          // Preguntar si desea inscribirse
+          const confirm = await this.confirmAction(
+            'Inscripción requerida',
+            'No estás inscrito en este ramo. ¿Deseas inscribirte?'
+          );
+
+          if (confirm) {
+            // Inscribir al estudiante en el Ramo
+            await this.firestore
+              .collection('Ramos')
+              .doc(docRamo)
+              .collection('Alumnos')
+              .doc(uidUsuario)
+              .set({
+                Nombre: user.displayName || 'Desconocido',
+                Asistencia: false,
+              });
+
+            console.log('Estudiante inscrito correctamente en el ramo:', docRamo);
+
+            // Registrar asistencia en la Clase correspondiente
+            await this.firestore
+              .collection('Clase')
+              .doc(uidClase)
+              .collection('Alumnos')
+              .doc(uidUsuario)
+              .set({
+                Nombre: user.displayName || 'Desconocido',
+                UID: uidUsuario,
+                Asistencia: true,
+              });
+
+            this.presentAlert('Éxito', 'Te has inscrito y tu asistencia fue registrada.');
+          }
         }
       } catch (error) {
-        console.error('Error al verificar la asistencia:', error);
-        this.presentErrorAlert('Error al registrar la asistencia.');
+        console.error('Error durante la inscripción:', error);
+        this.presentAlert('Error', 'Hubo un problema al procesar tu inscripción.');
       }
     } else {
       console.error('No hay usuario autenticado');
+      this.presentAlert('Error', 'No se detectó un usuario autenticado.');
     }
   }
 
@@ -97,30 +123,33 @@ export class RegistrarCamaraPage implements OnInit {
     return camera === 'granted' || camera === 'limited';
   }
 
-  async presentAlert(): Promise<void> {
+  async presentAlert(header: string, message: string): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Permiso denegado',
-      message: 'Para usar la aplicación, autoriza los permisos de cámara.',
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  async presentSuccessAlert(): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Asistencia registrada',
-      message: 'La asistencia ha sido registrada exitosamente.',
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  async presentErrorAlert(message: string): Promise<void> {
-    const alert = await this.alertController.create({
-      header: 'Error',
+      header,
       message,
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  async confirmAction(header: string, message: string): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        header,
+        message,
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => resolve(false),
+          },
+          {
+            text: 'Aceptar',
+            handler: () => resolve(true),
+          },
+        ],
+      });
+      await alert.present();
+    });
   }
 }
