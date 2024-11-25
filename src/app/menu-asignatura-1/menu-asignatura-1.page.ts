@@ -19,7 +19,6 @@ export class MenuAsignatura1Page implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(params => {
       this.ramoSeleccionado = params['clase'];
       console.log('Ramo seleccionado:', this.ramoSeleccionado);
@@ -42,10 +41,12 @@ export class MenuAsignatura1Page implements OnInit {
 
         console.log('Clases encontradas:', clasesSnapshot.docs.length);
 
-
         this.vinculos = clasesSnapshot.docs.map((doc) => {
           const clase = doc.data();
-          const fechaInicio = clase['fecha_inicio'];
+          const fechaInicioRaw = clase['fecha_inicio'];
+
+          // Transformar la fecha en formato deseado
+          const fechaInicio = this.formatFecha(fechaInicioRaw);
 
           return {
             ruta: '/lista-asistencia',
@@ -64,6 +65,25 @@ export class MenuAsignatura1Page implements OnInit {
     } else {
       console.error('No hay usuario autenticado o ramo no seleccionado');
     }
+  }
+
+  formatFecha(fechaISO: string): string {
+    const fecha = new Date(fechaISO);
+    const opcionesFecha = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    } as const;
+    const opcionesHora = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    } as const;
+
+    const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
+    const horaFormateada = fecha.toLocaleTimeString('es-ES', opcionesHora);
+
+    return `${fechaFormateada} ${horaFormateada}`;
   }
 
   goToListaAsistencia(uidClase: string) {
