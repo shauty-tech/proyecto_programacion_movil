@@ -24,9 +24,14 @@ export class MenuProfesorPage implements OnInit {
     icono:'reader-outline'
 
 },
+{
+  ruta:'/ingresar-asignatura',
+  titulo:'Crear asignatura',
+  icono:'create'
+
+},
 
   ];
-
 
   alertButtons=[{
     text:'Aceptar',

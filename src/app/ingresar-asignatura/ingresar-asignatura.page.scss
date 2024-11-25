@@ -1,0 +1,32 @@
+
+  
+  ion-item {
+    --color: #ffffff; /* Color del texto principal */
+    --placeholder-color: #bbbbbb; /* Color del placeholder */
+  }
+  
+  ion-label {
+    color: #ffffff; /* Color del label */
+  }
+  
+  ion-input {
+    color: #ffffff; /* Color del texto ingresado */
+  }
+  
+  ion-note {
+    color: #ff4d4d; /* Color de las notas de error */
+    font-size: 0.9rem;
+  }
+  
+  ion-button {
+    --background: #ff9500; /* Color del botón */
+    --background-activated: #e08400;
+    --color: #ffffff; /* Color del texto del botón */
+  }
+  
+  form {
+    ion-item {
+      margin-bottom: 16px; /* Espaciado entre los elementos */
+    }
+  }
+  

@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu-profesor" text="Volver" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-icon name="person" color="tertiary" slot="end" class="ion-padding" size="large"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ingresar Asignatura</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <form #form="ngForm" (ngSubmit)="confirmarGuardar()" novalidate>
+      <!-- Input del nombre de la asignatura -->
+      <ion-item>
+        <ion-label position="stacked">Nombre de la Asignatura</ion-label>
+        <ion-input
+          [(ngModel)]="nombreAsignatura"
+          name="nombre"
+          required
+          minlength="3"
+          maxlength="50"
+          #nombre="ngModel"
+          placeholder="Ejemplo: Algebra"
+        ></ion-input>
+      </ion-item>
+      <ion-note *ngIf="nombre.invalid && nombre.touched" color="danger">
+        El nombre debe tener entre 3 y 50 caracteres.
+      </ion-note>
+
+      <!-- Input del código de la asignatura -->
+      <ion-item>
+        <ion-label position="stacked">Código de la Asignatura</ion-label>
+        <ion-input
+          [(ngModel)]="codigoAsignatura"
+          name="codigo"
+          required
+          pattern="^[A-Za-z0-9]{3,10}$"
+          #codigo="ngModel"
+          placeholder="Ejemplo: 004F"
+        ></ion-input>
+      </ion-item>
+      <ion-note *ngIf="codigo.invalid && codigo.touched" color="danger">
+        El código debe tener entre 3 y 10 caracteres alfanuméricos.
+      </ion-note>
+
+      <!-- Botón de guardar -->
+      <ion-button
+        expand="block"
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Guardar Asignatura
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

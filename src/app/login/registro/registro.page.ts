@@ -78,14 +78,7 @@ export class RegistroPage implements OnInit {
         Apellido: this.apellPat,
       };
       
-   
-      if (this.email.endsWith('@alumno.cl')) {
-        await this.firestore.collection('Ramos/Lenguaje004D/Alumnos').doc(uid).set(alumnoData);
-        await this.firestore.collection('Ramos/Ingles003F/Alumnos').doc(uid).set(alumnoData);
-        await this.firestore.collection('Ramos/Matematicas001A/Alumnos').doc(uid).set(alumnoData);
-      }
       
-
       await this.storage.set('email', this.email);
       await this.storage.set('password', this.password);
 
