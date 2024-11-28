@@ -3,6 +3,7 @@ import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AlertController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Storage } from '@ionic/storage-angular'; // Importar Storage
 
 @Component({
   selector: 'app-registrar-camara',
@@ -16,13 +17,20 @@ export class RegistrarCamaraPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private storage: Storage // Inyectar Storage
   ) {}
 
   ngOnInit() {
     BarcodeScanner.isSupported().then((result) => {
       this.isSupported = result.supported;
     });
+
+    this.initializeStorage(); // Inicializar Storage
+  }
+
+  async initializeStorage() {
+    await this.storage.create(); // Crear instancia de Storage
   }
 
   async scan(): Promise<void> {
@@ -81,7 +89,7 @@ export class RegistrarCamaraPage implements OnInit {
           return;
         }
 
-        const userData = userDoc.data() as UserData; // Especificar el tipo esperado
+        const userData = userDoc.data() as UserData;
 
         // Verificar si el estudiante ya está inscrito en el Ramo
         const alumnoSnapshot = await this.firestore
@@ -138,7 +146,20 @@ export class RegistrarCamaraPage implements OnInit {
         }
       } catch (error) {
         console.error('Error durante la inscripción:', error);
-        this.presentAlert('Error', 'Hubo un problema al procesar tu inscripción.');
+
+        // Guardar datos en Ionic Storage si ocurre un error
+        const attendanceData = {
+          docRamo,
+          uidClase,
+          uidUsuario,
+        };
+
+        await this.storage.set('pendingAttendance', attendanceData);
+
+        this.presentAlert(
+          'Error',
+          'Hubo un problema al procesar tu inscripción. Los datos se guardaron localmente y se intentarán enviar más tarde.'
+        );
       }
     } else {
       console.error('No hay usuario autenticado');
